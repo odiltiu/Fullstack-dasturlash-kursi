@@ -70,30 +70,53 @@
 // handlePromises();
 
 const container = document.getElementById('users-container');
+const statusText = document.getElementById('status');
+
+// API'dan kelgan matnni HTML sifatida emas, oddiy matn sifatida chiqarish uchun.
+// Aks holda ma'lumot ichidagi <script> yoki <img onerror> kabi kod sahifada ishga tushib ketishi mumkin.
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+}
 
 async function fetchUsers() {
+    statusText.textContent = 'Yuklanmoqda...';
     try {
         const response = await fetch('https://dummyjson.com/users');
-        
+
         if (!response.ok) {
             throw new Error(`Xatolik yuz berdi: ${response.status}`);
         }
 
         const data = await response.json();
+        statusText.textContent = `${data.users.length} ta foydalanuvchi`;
 
         // Foydalanuvchilarni bitta HTML qatoriga yig'ib, ekranga birdaniga chiqaramiz:
         container.innerHTML = data.users.map((user) => `
-            <div class="user-card">
-                <h2>${user.firstName}</h2>
-                <p>${user.email}</p>
-                <p>${user.phone}</p>
-                <p>${user.username}</p>
-            </div>
+            <article class="user-card">
+                <img src="${escapeHtml(user.image)}" alt="" width="64" height="64" loading="lazy" />
+                <div>
+                    <h2>${escapeHtml(user.firstName)} ${escapeHtml(user.lastName)}</h2>
+                    <p class="username">@${escapeHtml(user.username)}</p>
+                    <p><a href="mailto:${escapeHtml(user.email)}">${escapeHtml(user.email)}</a></p>
+                    <p>${escapeHtml(user.phone)}</p>
+                </div>
+            </article>
         `).join('');
 
     } catch (error) {
         console.error("Ma'lumotlarni yuklashda xatolik:", error);
-        container.innerHTML = '<p>Maʼlumotlarni yuklab boʻlmadi.</p>';
+        statusText.textContent = '';
+        container.innerHTML = `
+            <div class="error">
+                <p>Maʼlumotlarni yuklab boʻlmadi.</p>
+                <button type="button" id="retry">Qayta urinish</button>
+            </div>`;
+        document.getElementById('retry').addEventListener('click', fetchUsers);
     }
 }
 

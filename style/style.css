@@ -3,3 +3,85 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: #f5f6f8;
+    color: #1f2937;
+}
+
+.page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 16px;
+}
+
+h1 {
+    font-size: 1.75rem;
+}
+
+.status {
+    margin: 6px 0 20px;
+    color: #6b7280;
+}
+
+.users-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.user-card {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+}
+
+.user-card img {
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #e5e7eb;
+}
+
+.user-card div {
+    min-width: 0;
+}
+
+.user-card h2 {
+    font-size: 1rem;
+}
+
+.user-card p {
+    font-size: 0.9rem;
+    color: #4b5563;
+    overflow-wrap: anywhere;
+}
+
+.user-card .username {
+    color: #9ca3af;
+}
+
+.user-card a {
+    color: #2563eb;
+}
+
+.error {
+    padding: 16px;
+    background: #fef2f2;
+    color: #991b1b;
+    border-radius: 12px;
+}
+
+.error button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #991b1b;
+    color: #fff;
+    cursor: pointer;
+}
